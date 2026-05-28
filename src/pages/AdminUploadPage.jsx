@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-import Header from "../components/header/Header";
-
 function AdminUploadPage() {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -45,7 +43,7 @@ function AdminUploadPage() {
 
   return (
     <>
-      <Header />
+      
 
       <main className="container" style={{ paddingTop: "2rem" }}>
         <h1>Upload de imagens</h1>

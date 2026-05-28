@@ -1,7 +1,9 @@
 import "../styles/auth.css";
+
 import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { AuthContext } from "../context/AuthContext";
 
@@ -18,16 +20,21 @@ function LoginPage() {
     try {
       const response = await axios.post(
         "http://localhost:5000/auth/login",
-        { email, password }
+        {
+          email,
+          password,
+        }
       );
 
       login(response.data.user, response.data.token);
 
-      alert("Login realizado com sucesso");
+      toast.success("Login realizado com sucesso");
+
       navigate("/");
     } catch (error) {
       console.log(error);
-      alert("Erro ao fazer login");
+
+      toast.error("Erro ao fazer login");
     }
   }
 

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "../components/header/Header";
-
 const API_URL = "http://localhost:5000";
 
 function AdminProductsPage() {
@@ -150,7 +148,7 @@ function AdminProductsPage() {
   if (loading) {
     return (
       <>
-        <Header />
+        
         <main className="container">
           <p>Carregando produtos...</p>
         </main>
@@ -160,7 +158,7 @@ function AdminProductsPage() {
 
   return (
     <>
-      <Header />
+      
 
       <main className="container" style={{ paddingTop: "2rem" }}>
         <h1>Painel de Produtos</h1>

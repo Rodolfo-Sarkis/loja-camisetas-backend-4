@@ -1,62 +1,104 @@
+import { useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import "./header.css";
 
-import { FaShoppingCart } from "react-icons/fa";
-import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+function Header({ user, onLogout }) {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-import { CartContext } from "../../context/CartContext";
-import { AuthContext } from "../../context/AuthContext";
+  const closeMenu = () => setMenuOpen(false);
 
-function Header() {
-  const { cartItems } = useContext(CartContext);
-  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const userName =
+    user?.name ||
+    user?.nome ||
+    user?.fullName ||
+    user?.username ||
+    user?.email?.split("@")[0] ||
+    "Usuário";
 
-  const navigate = useNavigate();
-
-  const totalItems = cartItems.reduce((acc, item) => {
-    const quantity = Number(item.quantity) || 0;
-    return acc + quantity;
-  }, 0);
-
-  const isAdmin = user?.isAdmin === true || user?.isAdmin === "true";
-
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+  const isAdmin = Boolean(user?.isAdmin || user?.role === "admin");
 
   return (
-    <header className="header">
-      <h2>DripStore</h2>
+    <>
+      <header className="header">
+        <div className="header__container">
+          <Link to="/" className="header__logo" onClick={closeMenu}>
+            Transcedental Clothing
+          </Link>
 
-      <nav className="header-nav">
-        <Link to="/">Home</Link>
-        <Link to="/products">Produtos</Link>
+          <nav className={`header__nav ${menuOpen ? "active" : ""}`}>
+            <NavLink to="/" className="header__link" onClick={closeMenu}>
+              Home
+            </NavLink>
 
-        <Link to="/cart" className="cart-link">
-          Carrinho
-          <FaShoppingCart />
-          <span className="cart-count">{totalItems}</span>
-        </Link>
+            <NavLink to="/products" className="header__link" onClick={closeMenu}>
+              Produtos
+            </NavLink>
 
-        {isAuthenticated && isAdmin && <Link to="/admin">Admin</Link>}
+            <NavLink to="/cart" className="header__link" onClick={closeMenu}>
+              Carrinho
+            </NavLink>
 
-        {isAuthenticated ? (
-          <>
-            <span className="user-name">Olá, {user?.name || "usuário"}</span>
+            {isAdmin && (
+              <NavLink to="/admin" className="header__link" onClick={closeMenu}>
+                Admin
+              </NavLink>
+            )}
 
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Registrar</Link>
-          </>
-        )}
-      </nav>
-    </header>
+            {user ? (
+              <button
+                className="header__logout-button"
+                onClick={() => {
+                  onLogout?.();
+                  closeMenu();
+                }}
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  className="header__link"
+                  onClick={closeMenu}
+                >
+                  Entrar
+                </NavLink>
+
+                <NavLink
+                  to="/register"
+                  className="header__link"
+                  onClick={closeMenu}
+                >
+                  Cadastrar
+                </NavLink>
+              </>
+            )}
+          </nav>
+
+          {user && (
+            <div className="header__user-area">
+              <span className="header__welcome">Olá, {userName}</span>
+            </div>
+          )}
+
+          <button
+            className={`header__menu-button ${menuOpen ? "active" : ""}`}
+            onClick={() => setMenuOpen((prev) => !prev)}
+            aria-label="Abrir menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="header__menu-icon"></span>
+            <span className="header__menu-icon"></span>
+            <span className="header__menu-icon"></span>
+          </button>
+        </div>
+      </header>
+
+      <div
+        className={`header__overlay ${menuOpen ? "active" : ""}`}
+        onClick={closeMenu}
+      />
+    </>
   );
 }
 

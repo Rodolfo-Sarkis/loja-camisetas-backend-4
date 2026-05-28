@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "../components/header/Header";
 import ProductCard from "../components/ProductCard/ProductCard";
+import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
+
+import "../components/Skeleton/skeleton.css";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -11,9 +13,9 @@ function Products() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/products"
-        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        const response = await axios.get("http://localhost:5000/products");
 
         const normalizedProducts = response.data.map((product) => ({
           ...product,
@@ -32,23 +34,23 @@ function Products() {
   }, []);
 
   return (
-    <>
-      <Header />
+    <main className="container">
+      <h1 className="title">Produtos</h1>
 
-      <main className="container">
-        <h1 className="title">Produtos</h1>
-
-        {loading ? (
-          <p>Carregando produtos...</p>
-        ) : (
-          <div className="products-grid">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        )}
-      </main>
-    </>
+      {loading ? (
+        <div className="products-grid">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : (
+        <div className="products-grid">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
+    </main>
   );
 }
 

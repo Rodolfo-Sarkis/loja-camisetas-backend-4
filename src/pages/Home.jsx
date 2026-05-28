@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import Header from "../components/header/Header";
 import ProductCard from "../components/ProductCard/ProductCard";
+import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 
 import "../styles/home.css";
+import "../components/Skeleton/skeleton.css";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -16,6 +17,8 @@ function Home() {
   useEffect(() => {
     async function fetchProducts() {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const response = await axios.get("http://localhost:5000/products");
 
         console.log("Produtos recebidos:", response.data);
@@ -49,47 +52,49 @@ function Home() {
   });
 
   return (
-    <>
-      <Header />
+    <main className="container">
+      <h1 className="title">Loja de Camisetas</h1>
 
-      <main className="container">
-        <h1 className="title">Loja de Camisetas</h1>
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Buscar camiseta..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-        <div className="filters">
-          <input
-            type="text"
-            placeholder="Buscar camiseta..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option>Todos</option>
+          <option>Oversized</option>
+          <option>Streetwear</option>
+          <option>Minimalista</option>
+        </select>
+      </div>
 
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option>Todos</option>
-            <option>Oversized</option>
-            <option>Streetwear</option>
-            <option>Minimalista</option>
-          </select>
+      {!loading && error && <p>{error}</p>}
+
+      {loading && (
+        <div className="products-grid">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
         </div>
+      )}
 
-        {loading && <p>Carregando produtos...</p>}
+      {!loading && !error && (
+        <>
+          <p style={{ marginBottom: "1rem" }}>
+            Produtos encontrados: {filteredProducts.length}
+          </p>
 
-        {!loading && error && <p>{error}</p>}
-
-        {!loading && !error && (
-          <>
-            <p style={{ marginBottom: "1rem" }}>
-              Produtos encontrados: {products.length}
-            </p>
-
-            <div className="products-grid">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </>
-        )}
-      </main>
-    </>
+          <div className="products-grid">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </>
+      )}
+    </main>
   );
 }
 

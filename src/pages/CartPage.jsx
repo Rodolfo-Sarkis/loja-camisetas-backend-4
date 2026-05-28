@@ -1,4 +1,4 @@
-import Header from "../components/header/Header";
+
 import "../styles/cart.css";
 
 import { useContext } from "react";
@@ -17,7 +17,7 @@ function CartPage() {
 
   return (
     <>
-      <Header />
+      
 
       <div className="container">
         <h1>Seu Carrinho</h1>

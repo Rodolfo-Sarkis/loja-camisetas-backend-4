@@ -1,10 +1,10 @@
-import Header from "../components/header/Header";
+
 import { Link } from "react-router-dom";
 
 function AdminPage() {
   return (
     <>
-      <Header />
+      
 
       <main className="container" style={{ paddingTop: "2rem" }}>
         <h1>Painel Admin</h1>

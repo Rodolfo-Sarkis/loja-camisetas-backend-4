@@ -1,11 +1,166 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
-import Header from "../components/header/Header";
 import { CartContext } from "../context/CartContext";
 
 import "../styles/product-page.css";
+
+function ProductPageSkeleton() {
+  return (
+    <>
+      <style>{`
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .pp-skeleton {
+          width: 100%;
+          max-width: 1400px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 40px;
+          align-items: start;
+        }
+
+        .pp-skeleton__image {
+          width: 100%;
+          height: 650px;
+          border-radius: 18px;
+          background: linear-gradient(
+            90deg,
+            #e5e5e5 25%,
+            #f2f2f2 50%,
+            #e5e5e5 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.2s infinite linear;
+        }
+
+        .pp-skeleton__content {
+          display: flex;
+          flex-direction: column;
+          gap: 18px;
+          padding-top: 10px;
+        }
+
+        .pp-skeleton__line {
+          height: 24px;
+          border-radius: 8px;
+          background: linear-gradient(
+            90deg,
+            #e5e5e5 25%,
+            #f2f2f2 50%,
+            #e5e5e5 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.2s infinite linear;
+        }
+
+        .pp-skeleton__line--title {
+          width: 75%;
+          height: 42px;
+        }
+
+        .pp-skeleton__line--price {
+          width: 35%;
+          height: 30px;
+        }
+
+        .pp-skeleton__line--text {
+          width: 100%;
+        }
+
+        .pp-skeleton__line--short {
+          width: 55%;
+        }
+
+        .pp-skeleton__sizes {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-top: 6px;
+        }
+
+        .pp-skeleton__chip {
+          width: 56px;
+          height: 42px;
+          border-radius: 10px;
+          background: linear-gradient(
+            90deg,
+            #e5e5e5 25%,
+            #f2f2f2 50%,
+            #e5e5e5 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.2s infinite linear;
+        }
+
+        .pp-skeleton__button {
+          width: 100%;
+          height: 52px;
+          border-radius: 10px;
+          margin-top: 14px;
+          background: linear-gradient(
+            90deg,
+            #e5e5e5 25%,
+            #f2f2f2 50%,
+            #e5e5e5 75%
+          );
+          background-size: 200% 100%;
+          animation: shimmer 1.2s infinite linear;
+        }
+
+        @media (max-width: 768px) {
+          .pp-skeleton {
+            grid-template-columns: 1fr;
+            gap: 22px;
+            padding: 24px 16px;
+          }
+
+          .pp-skeleton__image {
+            height: 420px;
+          }
+        }
+      `}</style>
+
+      <div className="pp-skeleton">
+        <div className="pp-skeleton__image"></div>
+
+        <div className="pp-skeleton__content">
+          <div className="pp-skeleton__line pp-skeleton__line--title"></div>
+          <div className="pp-skeleton__line pp-skeleton__line--price"></div>
+          <div className="pp-skeleton__line pp-skeleton__line--text"></div>
+          <div className="pp-skeleton__line pp-skeleton__line--text"></div>
+          <div className="pp-skeleton__line pp-skeleton__line--short"></div>
+
+          <div>
+            <div className="pp-skeleton__line pp-skeleton__line--short"></div>
+            <div className="pp-skeleton__sizes">
+              <div className="pp-skeleton__chip"></div>
+              <div className="pp-skeleton__chip"></div>
+              <div className="pp-skeleton__chip"></div>
+              <div className="pp-skeleton__chip"></div>
+            </div>
+          </div>
+
+          <div>
+            <div className="pp-skeleton__line pp-skeleton__line--short"></div>
+            <div className="pp-skeleton__line pp-skeleton__line--text"></div>
+          </div>
+
+          <div className="pp-skeleton__button"></div>
+        </div>
+      </div>
+    </>
+  );
+}
 
 function ProductPage() {
   const { id } = useParams();
@@ -20,6 +175,8 @@ function ProductPage() {
   useEffect(() => {
     async function fetchProduct() {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         const response = await axios.get("http://localhost:5000/products");
 
         const foundProduct = response.data.find((item) => item._id === id);
@@ -48,24 +205,20 @@ function ProductPage() {
 
   if (loading) {
     return (
-      <>
-        <Header />
-        <div className="container">
-          <p>Carregando produto...</p>
-        </div>
-      </>
+      <main className="product-page">
+        <ProductPageSkeleton />
+      </main>
     );
   }
 
   if (!product) {
     return (
-      <>
-        <Header />
+      <main className="product-page">
         <div className="container">
           <h1>Produto não encontrado</h1>
           <button onClick={() => navigate("/")}>Voltar para Home</button>
         </div>
-      </>
+      </main>
     );
   }
 
@@ -79,55 +232,51 @@ function ProductPage() {
   }
 
   return (
-    <>
-      <Header />
+    <main className="product-page">
+      <div className="product-image">
+        <img src={imageSrc} alt={product.name} />
+      </div>
 
-      <main className="product-page">
-        <div className="product-image">
-          <img src={imageSrc} alt={product.name} />
+      <div className="product-info">
+        <h1>{product.name}</h1>
+
+        <p className="price">R$ {Number(product.price).toFixed(2)}</p>
+
+        <p className="description">{product.description}</p>
+
+        <h3>Tamanho</h3>
+
+        <div className="sizes">
+          {product.sizes && product.sizes.length > 0 ? (
+            product.sizes.map((size) => (
+              <button
+                key={size}
+                type="button"
+                className={selectedSize === size ? "active-size" : ""}
+                onClick={() => setSelectedSize(size)}
+              >
+                {size}
+              </button>
+            ))
+          ) : (
+            <p>Sem tamanhos disponíveis</p>
+          )}
         </div>
 
-        <div className="product-info">
-          <h1>{product.name}</h1>
+        <h3>Quantidade</h3>
 
-          <p className="price">R$ {product.price.toFixed(2)}</p>
+        <input
+          type="number"
+          min="1"
+          value={quantity}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+        />
 
-          <p className="description">{product.description}</p>
-
-          <h3>Tamanho</h3>
-
-          <div className="sizes">
-            {product.sizes && product.sizes.length > 0 ? (
-              product.sizes.map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className={selectedSize === size ? "active-size" : ""}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  {size}
-                </button>
-              ))
-            ) : (
-              <p>Sem tamanhos disponíveis</p>
-            )}
-          </div>
-
-          <h3>Quantidade</h3>
-
-          <input
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-          />
-
-          <button className="buy-button" onClick={handleAddToCart}>
-            Adicionar ao carrinho
-          </button>
-        </div>
-      </main>
-    </>
+        <button className="buy-button" onClick={handleAddToCart}>
+          Adicionar ao carrinho
+        </button>
+      </div>
+    </main>
   );
 }
 
