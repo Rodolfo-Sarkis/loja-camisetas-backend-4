@@ -1,43 +1,35 @@
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import { CartContext } from "./CartContext";
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
     const storedCart = localStorage.getItem("cartItems");
 
-    return storedCart
-      ? JSON.parse(storedCart)
-      : [];
+    return storedCart ? JSON.parse(storedCart) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(cartItems)
-    );
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  function addToCart(
-    product,
-    size,
-    quantity
-  ) {
-    const resolvedSize =
-      size ?? product?.sizes?.[0];
+  function addToCart(product, size, quantity) {
+    const resolvedSize = size ?? product?.sizes?.[0];
+    const parsedQuantity = Number(quantity) || 1;
 
-    const parsedQuantity =
-      Number(quantity) || 1;
+    let toastMessage = "Produto adicionado ao carrinho";
 
-    const existingProduct =
-      cartItems.find(
+    setCartItems((currentCart) => {
+      const existingProduct = currentCart.find(
         (item) =>
           item.id === product.id &&
           item.size === resolvedSize
       );
 
-    if (existingProduct) {
-      const updatedCart =
-        cartItems.map((item) => {
+      if (existingProduct) {
+        toastMessage = "Quantidade atualizada no carrinho";
+
+        return currentCart.map((item) => {
           if (
             item.id === product.id &&
             item.size === resolvedSize
@@ -45,36 +37,32 @@ export function CartProvider({ children }) {
             return {
               ...item,
               quantity:
-                Number(item.quantity) +
-                parsedQuantity,
+                Number(item.quantity) + parsedQuantity,
             };
           }
 
           return item;
         });
+      }
 
-      setCartItems(updatedCart);
-    } else {
-      setCartItems([
-        ...cartItems,
+      return [
+        ...currentCart,
         {
           ...product,
           size: resolvedSize,
           quantity: parsedQuantity,
         },
-      ]);
-    }
+      ];
+    });
+
+    toast.success(toastMessage);
   }
 
   function removeFromCart(id, size) {
-    const updatedCart =
-      cartItems.filter(
-        (item) =>
-          !(
-            item.id === id &&
-            item.size === size
-          )
-      );
+    const updatedCart = cartItems.filter(
+      (item) =>
+        !(item.id === id && item.size === size)
+    );
 
     setCartItems(updatedCart);
   }

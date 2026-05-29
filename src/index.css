@@ -28,6 +28,23 @@ body,
 body {
   background-color: #f5f5f5;
   overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+
+  background-image: url("./assets/logo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 500px;
+
+  opacity: 0.04;
+
+  pointer-events: none;
+  z-index: -1;
 }
 
 a {
