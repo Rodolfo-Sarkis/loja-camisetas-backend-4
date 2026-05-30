@@ -68,7 +68,6 @@ function Checkout() {
     },
     grid: {
       display: "grid",
-      gridTemplateColumns: "1.1fr 0.9fr",
       gap: "1.5rem",
       alignItems: "start",
     },
@@ -118,7 +117,8 @@ function Checkout() {
       borderRadius: "14px",
       cursor: "pointer",
       fontWeight: 700,
-      transition: "transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease",
+      transition:
+        "transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease",
       boxShadow: "0 10px 22px rgba(17, 24, 39, 0.18)",
     },
     summaryList: {
@@ -223,12 +223,17 @@ function Checkout() {
       <section style={styles.hero}>
         <h1 style={styles.heroTitle}>Checkout</h1>
         <p style={styles.heroText}>
-          Preencha seus dados para continuar com a finalização do pedido.
-          Revise os itens no resumo ao lado antes de concluir.
+          Preencha seus dados para continuar com a finalização do pedido. Revise
+          os itens no resumo ao lado antes de concluir.
         </p>
       </section>
 
-      <div style={styles.grid}>
+      <div
+        style={{
+          ...styles.grid,
+          gridTemplateColumns: window.innerWidth <= 768 ? "1fr" : "1.1fr 0.9fr",
+        }}
+      >
         <section style={styles.panel}>
           <h2 style={styles.sectionTitle}>Dados de entrega</h2>
 
@@ -277,8 +282,8 @@ function Checkout() {
           </form>
 
           <p style={styles.smallNote}>
-            O pagamento pode ser integrado depois com Mercado Pago. Por enquanto,
-            esta etapa serve como estrutura profissional do checkout.
+            Seus dados serão utilizados apenas para processar o pedido e
+            facilitar o contato sobre a compra.
           </p>
         </section>
 
@@ -293,11 +298,7 @@ function Checkout() {
 
               return (
                 <div key={`${item.id}-${item.size}`} style={styles.item}>
-                  <img
-                    src={imageSrc}
-                    alt={item.name}
-                    style={styles.image}
-                  />
+                  <img src={imageSrc} alt={item.name} style={styles.image} />
 
                   <div>
                     <p style={styles.itemName}>{item.name}</p>
@@ -307,8 +308,7 @@ function Checkout() {
                     <p style={styles.itemText}>
                       Subtotal: R${" "}
                       {(
-                        (Number(item.price) || 0) *
-                        (Number(item.quantity) || 0)
+                        (Number(item.price) || 0) * (Number(item.quantity) || 0)
                       ).toFixed(2)}
                     </p>
                   </div>

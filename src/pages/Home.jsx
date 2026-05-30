@@ -38,13 +38,8 @@ function Home() {
   }, []);
 
   const featuredProducts = products
-    .filter((product) => product.featured)
+    .filter((product) => product.featured === true)
     .slice(0, 6);
-
-  const fallbackProducts = products.slice(0, 6);
-
-  const productsToShow =
-    featuredProducts.length > 0 ? featuredProducts : fallbackProducts;
 
   const styles = {
     page: {
@@ -64,7 +59,6 @@ function Home() {
     },
     heroGrid: {
       display: "grid",
-      gridTemplateColumns: "1.2fr 0.8fr",
       gap: "2rem",
       alignItems: "center",
     },
@@ -217,7 +211,7 @@ function Home() {
   return (
     <main className="container" style={styles.page}>
       <section style={styles.hero}>
-        <div style={styles.heroGrid}>
+        <div style={styles.heroGrid} className="home-hero-grid">
           <div>
             <div style={styles.badge}>Coleção streetwear premium</div>
 
@@ -250,9 +244,7 @@ function Home() {
 
             <div style={styles.heroCardItem}>
               <p style={styles.heroCardLabel}>Identidade</p>
-              <p style={styles.heroCardValue}>
-                Streetwear com personalidade
-              </p>
+              <p style={styles.heroCardValue}>Streetwear com personalidade</p>
             </div>
 
             <div style={styles.heroCardItem}>
@@ -280,9 +272,10 @@ function Home() {
             <h2 style={styles.sectionTitle}>Sobre a marca</h2>
 
             <p style={styles.sectionText}>
-              A Transcedental Clothing nasceu da paixão por estilo, autenticidade e
-              expressão pessoal. Cada peça é pensada para transmitir identidade,
-              conforto e atitude, valorizando quem busca se destacar através da moda.
+              A Transcedental Clothing nasceu da paixão por estilo,
+              autenticidade e expressão pessoal. Cada peça é pensada para
+              transmitir identidade, conforto e atitude, valorizando quem busca
+              se destacar através da moda.
             </p>
           </div>
         </div>
@@ -315,7 +308,16 @@ function Home() {
       </section>
 
       <section id="destaques" style={styles.section}>
-        <div style={styles.sectionHeader}>
+        <div
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "18px",
+            padding: "1.5rem",
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+            marginBottom: "1rem",
+          }}
+        >
           <div>
             <h2 style={styles.sectionTitle}>Produtos em destaque</h2>
             <p style={styles.sectionText}>
@@ -345,15 +347,15 @@ function Home() {
           </div>
         )}
 
-        {!loading && !error && productsToShow.length === 0 && (
+        {!loading && !error && featuredProducts.length === 0 && (
           <div style={styles.emptyBox}>
             Nenhum produto encontrado no momento.
           </div>
         )}
 
-        {!loading && !error && productsToShow.length > 0 && (
+        {!loading && !error && featuredProducts.length > 0 && (
           <div style={styles.featuredGrid}>
-            {productsToShow.map((product) => (
+            {featuredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

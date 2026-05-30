@@ -19,7 +19,7 @@ function Footer() {
 
         <div className="footer__links">
           <a
-            href="https://wa.me/5511913628354"
+            href="https://wa.me/5511945822624"
             target="_blank"
             rel="noreferrer"
             className="footer__icon footer__whatsapp"
@@ -28,14 +28,14 @@ function Footer() {
           </a>
 
           <a
-            href="mailto:rodolforequiao@gmail.com"
+            href="mailto:tiago.mota98@gmail.com"
             className="footer__icon footer__email"
           >
             <MdEmail />
           </a>
 
           <a
-            href="https://www.instagram.com/"
+            href="https://www.instagram.com/transcendental.oficial"
             target="_blank"
             rel="noreferrer"
             className="footer__icon footer__instagram"

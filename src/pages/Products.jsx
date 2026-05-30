@@ -159,9 +159,9 @@ function Products() {
       <section style={styles.hero}>
         <h1 style={styles.heroTitle}>Coleção completa</h1>
         <p style={styles.heroText}>
-          Explore todos os produtos da Transcedental Clothing. Aqui você encontra
-          o catálogo completo da loja, com busca e filtro por categoria para facilitar
-          a navegação.
+          Explore todos os produtos da Transcedental Clothing. Aqui você
+          encontra o catálogo completo da loja, com busca e filtro por categoria
+          para facilitar a navegação.
         </p>
       </section>
 
@@ -188,11 +188,32 @@ function Products() {
       </div>
 
       <div style={styles.metaRow}>
-        <p style={styles.resultsText}>
-          Produtos encontrados: {filteredProducts.length}
-        </p>
+        <div
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "18px",
+            padding: "1rem 1.5rem",
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+            marginBottom: "1rem",
+          }}
+        >
+          <p
+            style={{
+              margin: 0,
+              color: "#6b7280",
+              fontWeight: 500,
+            }}
+          >
+            Produtos encontrados: {filteredProducts.length}
+          </p>
+        </div>
 
-        <button type="button" onClick={handleClearFilters} style={styles.clearButton}>
+        <button
+          type="button"
+          onClick={handleClearFilters}
+          style={styles.clearButton}
+        >
           Limpar filtros
         </button>
       </div>

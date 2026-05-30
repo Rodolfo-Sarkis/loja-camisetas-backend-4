@@ -1,4 +1,3 @@
-
 import "../styles/cart.css";
 
 import { useContext } from "react";
@@ -17,47 +16,49 @@ function CartPage() {
 
   return (
     <>
-      
-
       <div className="container">
-        <h1>Seu Carrinho</h1>
+        <div
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "18px",
+            padding: "1.5rem",
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <h1
+            style={{
+              margin: 0,
+              color: "#111827",
+            }}
+          >
+            Seu Carrinho
+          </h1>
+        </div>
 
         {cartItems.length === 0 ? (
           <p>Carrinho vazio</p>
         ) : (
           cartItems.map((item) => (
-            <div
-              key={`${item.id}-${item.size}`}
-              className="cart-item"
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                width="120"
-              />
+            <div key={`${item.id}-${item.size}`} className="cart-item">
+              <img src={item.image} alt={item.name} width="120" />
 
               <div>
                 <h3>{item.name}</h3>
 
-                <p>
-                  Quantidade: {Number(item.quantity) || 0}
-                </p>
+                <p>Quantidade: {Number(item.quantity) || 0}</p>
 
-                <p>
-                  Tamanho: {item.size}
-                </p>
+                <p>Tamanho: {item.size}</p>
 
                 <p>
                   Subtotal: R${" "}
                   {(
-                    (Number(item.price) || 0) *
-                    (Number(item.quantity) || 0)
+                    (Number(item.price) || 0) * (Number(item.quantity) || 0)
                   ).toFixed(2)}
                 </p>
 
-                <button
-                  onClick={() => removeFromCart(item.id, item.size)}
-                >
+                <button onClick={() => removeFromCart(item.id, item.size)}>
                   Remover
                 </button>
               </div>
@@ -65,15 +66,32 @@ function CartPage() {
           ))
         )}
 
-        <h2>
-          Total: R$ {total.toFixed(2)}
-        </h2>
+        <div
+          style={{
+            background: "#ffffff",
+            border: "1px solid #e5e7eb",
+            borderRadius: "18px",
+            padding: "1.5rem",
+            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+            marginTop: "1.5rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              color: "#111827",
+              fontSize: "1.8rem",
+              fontWeight: "700",
+            }}
+          >
+            Total: R$ {total.toFixed(2)}
+          </h2>
+        </div>
 
         {cartItems.length > 0 && (
           <Link to="/checkout">
-            <button className="checkout-button">
-              Ir para checkout
-            </button>
+            <button className="checkout-button">Ir para checkout</button>
           </Link>
         )}
       </div>
