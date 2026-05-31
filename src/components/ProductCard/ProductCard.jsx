@@ -1,18 +1,16 @@
 import { Link } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 import "./product-card.css";
 
 function ProductCard({ product }) {
   const imageSrc = product.image?.startsWith("http")
     ? product.image
-    : `http://localhost:5000${product.image}`;
+    : `${API_URL}${product.image}`;
 
   return (
     <div className="product-card">
-      <Link
-        to={`/product/${product.id}`}
-        className="product-card-image"
-      >
+      <Link to={`/product/${product.id}`} className="product-card-image">
         <img src={imageSrc} alt={product.name} />
       </Link>
 
