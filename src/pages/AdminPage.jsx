@@ -21,7 +21,10 @@ function AdminPage() {
   };
 
   return (
-    <main className="container" style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+    <main
+      className="container"
+      style={{ paddingTop: "2rem", paddingBottom: "3rem" }}
+    >
       <section
         style={{
           background: "linear-gradient(135deg, #111827 0%, #1f2937 100%)",
@@ -39,8 +42,16 @@ function AdminPage() {
           Painel Admin
         </h1>
 
-        <p style={{ margin: 0, maxWidth: "700px", lineHeight: 1.6, opacity: 0.9 }}>
-          Central de controle do ecommerce para cadastrar produtos, enviar imagens e organizar as próximas melhorias do sistema.
+        <p
+          style={{
+            margin: 0,
+            maxWidth: "700px",
+            lineHeight: 1.6,
+            opacity: 0.9,
+          }}
+        >
+          Central de controle do ecommerce para cadastrar produtos, enviar
+          imagens e organizar as próximas melhorias do sistema.
         </p>
       </section>
 
@@ -69,7 +80,9 @@ function AdminPage() {
         </div>
 
         <div style={statCardStyle}>
-          <p style={{ margin: 0, fontSize: "0.9rem", opacity: 0.8 }}>Próximo passo</p>
+          <p style={{ margin: 0, fontSize: "0.9rem", opacity: 0.8 }}>
+            Próximo passo
+          </p>
           <h3 style={{ margin: "0.4rem 0 0" }}>Dashboard</h3>
           <p style={{ margin: "0.5rem 0 0", opacity: 0.85, lineHeight: 1.5 }}>
             Depois vamos colocar estatísticas e organização visual.
@@ -77,8 +90,21 @@ function AdminPage() {
         </div>
       </section>
 
-      <section style={{ marginTop: "2rem" }}>
-        <h2 style={{ marginBottom: "1rem", fontSize: "1.4rem" }}>
+      <section
+        style={{
+          marginTop: "2rem",
+          background: "#ffffff",
+          padding: "1.5rem",
+          borderRadius: "16px",
+        }}
+      >
+        <h2
+          style={{
+            marginBottom: "1rem",
+            fontSize: "1.4rem",
+            marginTop: 0,
+          }}
+        >
           Atalhos rápidos
         </h2>
 
@@ -94,18 +120,21 @@ function AdminPage() {
             style={cardStyle}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 12px 28px rgba(0, 0, 0, 0.08)";
+              e.currentTarget.style.boxShadow =
+                "0 12px 28px rgba(0, 0, 0, 0.08)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.04)";
+              e.currentTarget.style.boxShadow =
+                "0 8px 24px rgba(0, 0, 0, 0.04)";
             }}
           >
             <h3 style={{ marginTop: 0, marginBottom: "0.5rem" }}>
               Cadastrar produtos
             </h3>
             <p style={{ margin: 0, lineHeight: 1.6, color: "#4b5563" }}>
-              Acesse a área de criação e gerenciamento dos produtos do ecommerce.
+              Acesse a área de criação e gerenciamento dos produtos do
+              ecommerce.
             </p>
             <span
               style={{
@@ -124,11 +153,13 @@ function AdminPage() {
             style={cardStyle}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-3px)";
-              e.currentTarget.style.boxShadow = "0 12px 28px rgba(0, 0, 0, 0.08)";
+              e.currentTarget.style.boxShadow =
+                "0 12px 28px rgba(0, 0, 0, 0.08)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.04)";
+              e.currentTarget.style.boxShadow =
+                "0 8px 24px rgba(0, 0, 0, 0.04)";
             }}
           >
             <h3 style={{ marginTop: 0, marginBottom: "0.5rem" }}>
