@@ -8,6 +8,8 @@ import ProductCardSkeleton from "../components/Skeleton/ProductCardSkeleton";
 import "../styles/home.css";
 import "../components/Skeleton/skeleton.css";
 
+import { API_URL } from "../config/api";
+
 function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +20,7 @@ function Home() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const response = await axios.get("http://localhost:5000/products");
+        const response = await axios.get(`${API_URL}/products`);
 
         const normalizedProducts = response.data.map((product) => ({
           ...product,
