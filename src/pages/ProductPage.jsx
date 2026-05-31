@@ -163,6 +163,26 @@ function ProductPageSkeleton() {
   );
 }
 
+function getImageUrl(image) {
+  if (!image) return "";
+
+  if (image.startsWith("http")) {
+    try {
+      const url = new URL(image);
+
+      if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+        return image.replace(`${url.protocol}//${url.host}`, API_URL);
+      }
+
+      return image;
+    } catch {
+      return image;
+    }
+  }
+
+  return `${API_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+}
+
 function ProductPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -180,12 +200,14 @@ function ProductPage() {
 
         const response = await axios.get(`${API_URL}/products`);
 
-        const foundProduct = response.data.find((item) => item._id === id);
+        const foundProduct = response.data.find(
+          (item) => item._id === id || item.id === id
+        );
 
         if (foundProduct) {
           const normalizedProduct = {
             ...foundProduct,
-            id: foundProduct._id,
+            id: foundProduct._id || foundProduct.id,
           };
 
           setProduct(normalizedProduct);
@@ -223,9 +245,7 @@ function ProductPage() {
     );
   }
 
-  const imageSrc = product.image?.startsWith("http")
-    ? product.image
-    : `${API_URL}${product.image}`;
+  const imageSrc = getImageUrl(product.image);
 
   function handleAddToCart() {
     addToCart(product, selectedSize, quantity);
@@ -243,7 +263,9 @@ function ProductPage() {
 
         <p className="price">R$ {Number(product.price).toFixed(2)}</p>
 
-        <p className="description">{product.description}</p>
+        <p className="description">
+          {product.description || "Sem descrição disponível."}
+        </p>
 
         <h3>Tamanho</h3>
 
