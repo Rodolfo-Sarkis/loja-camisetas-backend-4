@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { AuthContext } from "../context/AuthContext";
+import { API_URL } from "../config/api";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -19,7 +20,7 @@ function LoginPage() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth/login",
+        `${API_URL}/auth/login`,
         {
           email,
           password,
