@@ -3,6 +3,27 @@ import "../styles/cart.css";
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import { API_URL } from "../config/api";
+
+function getImageUrl(image) {
+  if (!image) return "";
+
+  if (image.startsWith("http")) {
+    try {
+      const url = new URL(image);
+
+      if (url.hostname === "localhost" || url.hostname === "127.0.0.1") {
+        return image.replace(`${url.protocol}//${url.host}`, API_URL);
+      }
+
+      return image;
+    } catch {
+      return image;
+    }
+  }
+
+  return `${API_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+}
 
 function CartPage() {
   const { cartItems, removeFromCart } = useContext(CartContext);
@@ -42,7 +63,7 @@ function CartPage() {
         ) : (
           cartItems.map((item) => (
             <div key={`${item.id}-${item.size}`} className="cart-item">
-              <img src={item.image} alt={item.name} width="120" />
+              <img src={getImageUrl(item.image)} alt={item.name} width="120" />
 
               <div>
                 <h3>{item.name}</h3>
