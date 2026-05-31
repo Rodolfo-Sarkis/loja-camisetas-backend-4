@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { CartContext } from "../context/CartContext";
+import { API_URL } from "../config/api";
 
 import "../styles/product-page.css";
 
@@ -177,7 +178,7 @@ function ProductPage() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const response = await axios.get("http://localhost:5000/products");
+        const response = await axios.get(`${API_URL}/products`);
 
         const foundProduct = response.data.find((item) => item._id === id);
 
@@ -224,7 +225,7 @@ function ProductPage() {
 
   const imageSrc = product.image?.startsWith("http")
     ? product.image
-    : `http://localhost:5000${product.image}`;
+    : `${API_URL}${product.image}`;
 
   function handleAddToCart() {
     addToCart(product, selectedSize, quantity);
