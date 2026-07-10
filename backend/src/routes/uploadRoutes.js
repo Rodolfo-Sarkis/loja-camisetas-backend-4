@@ -1,24 +1,21 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const { v2: cloudinary } = require("cloudinary");
 
 const router = express.Router();
 
-const uploadDir = path.resolve(__dirname, "../../uploads");
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname);
-    cb(null, `${uniqueSuffix}${ext}`);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "transcendental-clothing",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
   },
 });
 
@@ -27,14 +24,14 @@ const upload = multer({ storage });
 router.post("/", upload.single("image"), (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ message: "Nenhuma imagem foi enviada." });
+      return res.status(400).json({
+        message: "Nenhuma imagem foi enviada.",
+      });
     }
-
-    const imageUrl = `/uploads/${req.file.filename}`;
 
     return res.json({
       message: "Imagem enviada com sucesso",
-      imageUrl,
+      imageUrl: req.file.path,
     });
   } catch (error) {
     return res.status(500).json({
