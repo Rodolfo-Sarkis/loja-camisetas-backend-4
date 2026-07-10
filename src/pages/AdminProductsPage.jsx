@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const API_URL = "http://localhost:5000";
+import { API_URL } from "../config/api";
 
 function AdminProductsPage() {
   const [products, setProducts] = useState([]);

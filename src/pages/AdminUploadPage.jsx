@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { API_URL } from "../config/api";
 
 function AdminUploadPage() {
   const [file, setFile] = useState(null);
@@ -22,7 +23,7 @@ function AdminUploadPage() {
       formData.append("image", file);
 
       const response = await axios.post(
-        "http://localhost:5000/upload",
+        `${API_URL}/upload`,
         formData,
         {
           headers: {
@@ -31,7 +32,10 @@ function AdminUploadPage() {
         }
       );
 
-      const finalUrl = `http://localhost:5000${response.data.imageUrl}`;
+      const finalUrl = response.data.imageUrl.startsWith("http")
+        ? response.data.imageUrl
+        : `${API_URL}${response.data.imageUrl}`;
+
       setImageUrl(finalUrl);
       toast.success("Imagem enviada com sucesso!");
       setFile(null);
@@ -174,7 +178,11 @@ function AdminUploadPage() {
               {imageUrl}
             </a>
 
-            <img src={imageUrl} alt="Preview da imagem enviada" style={styles.previewImage} />
+            <img
+              src={imageUrl}
+              alt="Preview da imagem enviada"
+              style={styles.previewImage}
+            />
           </div>
         )}
       </section>
