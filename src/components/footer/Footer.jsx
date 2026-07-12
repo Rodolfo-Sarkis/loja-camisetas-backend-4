@@ -10,7 +10,7 @@ function Footer() {
     <footer className="footer">
       <div className="footer__container">
         <div className="footer__brand">
-          <h2 className="footer__title">Transcedental Clothing</h2>
+          <h2 className="footer__title">Transcendental Clothing</h2>
 
           <p className="footer__text">
             Camisetas, estilo e identidade em um só lugar.
@@ -46,7 +46,7 @@ function Footer() {
 
         <div className="footer__bottom">
           <p className="footer__copy">
-            © {year} Transcedental Clothing
+            © {year} Transcendental Clothing
           </p>
         </div>
       </div>

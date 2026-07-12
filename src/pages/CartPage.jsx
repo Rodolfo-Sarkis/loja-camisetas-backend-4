@@ -59,7 +59,41 @@ function CartPage() {
         </div>
 
         {cartItems.length === 0 ? (
-          <p>Carrinho vazio</p>
+          <div
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "18px",
+              padding: "2rem 1.5rem",
+              boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+              textAlign: "center",
+              marginBottom: "1.5rem",
+            }}
+          >
+            <h2
+              style={{
+                margin: "0 0 0.75rem 0",
+                color: "#111827",
+              }}
+            >
+              Carrinho vazio
+            </h2>
+
+            <p
+              style={{
+                marginBottom: "1.5rem",
+                color: "#6b7280",
+              }}
+            >
+              Adicione produtos ao seu carrinho para continuar sua compra.
+            </p>
+
+            <Link to="/products">
+              <button className="checkout-button">
+                Ver produtos
+              </button>
+            </Link>
+          </div>
         ) : (
           cartItems.map((item) => (
             <div key={`${item.id}-${item.size}`} className="cart-item">
@@ -75,7 +109,8 @@ function CartPage() {
                 <p>
                   Subtotal: R${" "}
                   {(
-                    (Number(item.price) || 0) * (Number(item.quantity) || 0)
+                    (Number(item.price) || 0) *
+                    (Number(item.quantity) || 0)
                   ).toFixed(2)}
                 </p>
 
@@ -112,7 +147,9 @@ function CartPage() {
 
         {cartItems.length > 0 && (
           <Link to="/checkout">
-            <button className="checkout-button">Ir para checkout</button>
+            <button className="checkout-button">
+              Ir para checkout
+            </button>
           </Link>
         )}
       </div>

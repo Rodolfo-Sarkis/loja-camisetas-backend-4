@@ -217,7 +217,7 @@ function Home() {
           <div>
             <div style={styles.badge}>Coleção streetwear premium</div>
 
-            <h1 style={styles.title}>Transcedental Clothing</h1>
+            <h1 style={styles.title}>Transcendental Clothing</h1>
 
             <p style={styles.subtitle}>
               Camisetas com identidade, presença e estilo para quem quer se
@@ -274,7 +274,7 @@ function Home() {
             <h2 style={styles.sectionTitle}>Sobre a marca</h2>
 
             <p style={styles.sectionText}>
-              A Transcedental Clothing nasceu da paixão por estilo,
+              A Transcendental Clothing nasceu da paixão por estilo,
               autenticidade e expressão pessoal. Cada peça é pensada para
               transmitir identidade, conforto e atitude, valorizando quem busca
               se destacar através da moda.
@@ -300,10 +300,10 @@ function Home() {
           </div>
 
           <div style={styles.aboutCard}>
-            <h3 style={styles.aboutCardTitle}>Apresentação</h3>
+            <h3 style={styles.aboutCardTitle}>Experiência</h3>
             <p style={styles.aboutCardText}>
-              Estrutura ideal para mostrar o projeto como ecommerce real em
-              portfólio.
+              Um e-commerce desenvolvido para oferecer uma experiência moderna,
+              intuitiva e agradável em todas as etapas da compra.
             </p>
           </div>
         </div>

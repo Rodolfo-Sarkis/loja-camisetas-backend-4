@@ -22,7 +22,7 @@ function Header({ user, onLogout }) {
       <header className="header">
         <div className="header__container">
           <Link to="/" className="header__logo" onClick={closeMenu}>
-            Transcedental Clothing
+            Transcendental Clothing
           </Link>
 
           <nav className={`header__nav ${menuOpen ? "active" : ""}`}>

@@ -5,6 +5,7 @@ import { CartContext } from "../context/CartContext";
 import { API_URL } from "../config/api";
 
 import "../styles/product-page.css";
+import { toast } from "react-toastify";
 
 function ProductPageSkeleton() {
   return (
@@ -201,7 +202,7 @@ function ProductPage() {
         const response = await axios.get(`${API_URL}/products`);
 
         const foundProduct = response.data.find(
-          (item) => item._id === id || item.id === id
+          (item) => item._id === id || item.id === id,
         );
 
         if (foundProduct) {
@@ -237,9 +238,50 @@ function ProductPage() {
   if (!product) {
     return (
       <main className="product-page">
-        <div className="container">
-          <h1>Produto não encontrado</h1>
-          <button onClick={() => navigate("/")}>Voltar para Home</button>
+        <div
+          className="container"
+          style={{
+            padding: "3rem 0",
+          }}
+        >
+          <div
+            style={{
+              background: "#ffffff",
+              border: "1px solid #e5e7eb",
+              borderRadius: "18px",
+              padding: "2rem",
+              boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+              textAlign: "center",
+              maxWidth: "600px",
+              margin: "0 auto",
+            }}
+          >
+            <h1
+              style={{
+                marginTop: 0,
+                color: "#111827",
+              }}
+            >
+              Produto não encontrado
+            </h1>
+
+            <p
+              style={{
+                color: "#6b7280",
+                marginBottom: "1.5rem",
+              }}
+            >
+              O produto que você tentou acessar não está disponível ou foi
+              removido.
+            </p>
+
+            <button
+              className="buy-button"
+              onClick={() => navigate("/products")}
+            >
+              Ver produtos
+            </button>
+          </div>
         </div>
       </main>
     );
@@ -248,7 +290,15 @@ function ProductPage() {
   const imageSrc = getImageUrl(product.image);
 
   function handleAddToCart() {
-    addToCart(product, selectedSize, quantity);
+    if (!selectedSize) {
+      toast.error("Selecione um tamanho.");
+      return;
+    }
+
+    const validQuantity = Math.max(1, Number(quantity) || 1);
+
+    addToCart(product, selectedSize, validQuantity);
+
     navigate("/cart");
   }
 
@@ -292,12 +342,28 @@ function ProductPage() {
           type="number"
           min="1"
           value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+
+            setQuantity(value < 1 || Number.isNaN(value) ? 1 : value);
+          }}
         />
 
         <button className="buy-button" onClick={handleAddToCart}>
           Adicionar ao carrinho
         </button>
+
+        <p
+          style={{
+            marginTop: "1rem",
+            color: "#6b7280",
+            fontSize: "0.95rem",
+            lineHeight: 1.5,
+          }}
+        >
+          🔒 Pagamento seguro. Você poderá concluir sua compra pelo Mercado
+          Pago.
+        </p>
       </div>
     </main>
   );

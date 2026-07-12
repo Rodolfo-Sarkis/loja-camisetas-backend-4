@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
+import "../styles/admin-products.css";
 import { API_URL } from "../config/api";
 
 function AdminProductsPage() {
@@ -39,7 +39,6 @@ function AdminProductsPage() {
 
     loadProducts();
   }, []);
-
   const totalProducts = useMemo(() => products.length, [products]);
 
   const categoriesCount = useMemo(() => {
@@ -47,7 +46,7 @@ function AdminProductsPage() {
       products
         .map((product) => product.category)
         .filter(Boolean)
-        .map((category) => category.trim().toLowerCase())
+        .map((category) => category.trim().toLowerCase()),
     );
 
     return uniqueCategories.size;
@@ -157,7 +156,7 @@ function AdminProductsPage() {
 
   async function handleDelete(id) {
     const confirmDelete = window.confirm(
-      "Tem certeza que deseja excluir este produto?"
+      "Tem certeza que deseja excluir este produto?",
     );
 
     if (!confirmDelete) return;
@@ -229,18 +228,15 @@ function AdminProductsPage() {
       color: "#6b7280",
       lineHeight: 1.5,
     },
-    contentGrid: {
-      display: "grid",
-      gridTemplateColumns: "minmax(320px, 420px) 1fr",
-      gap: "1.5rem",
-      alignItems: "start",
-    },
+
     panel: {
       background: "#ffffff",
       border: "1px solid #e5e7eb",
       borderRadius: "18px",
       padding: "1.5rem",
       boxShadow: "0 8px 24px rgba(0, 0, 0, 0.04)",
+      width: "100%",
+      boxSizing: "border-box",
     },
     sectionTitle: {
       marginTop: 0,
@@ -254,6 +250,7 @@ function AdminProductsPage() {
     },
     input: {
       width: "100%",
+      boxSizing: "border-box",
       border: "1px solid #d1d5db",
       borderRadius: "12px",
       padding: "0.85rem 1rem",
@@ -261,8 +258,19 @@ function AdminProductsPage() {
       outline: "none",
       background: "#fff",
     },
+
+    fileInput: {
+      width: "100%",
+      border: "1px solid #d1d5db",
+      borderRadius: "12px",
+      padding: "0.7rem",
+      background: "#fff",
+      boxSizing: "border-box",
+    },
+
     textarea: {
       width: "100%",
+      boxSizing: "border-box",
       border: "1px solid #d1d5db",
       borderRadius: "12px",
       padding: "0.85rem 1rem",
@@ -309,12 +317,14 @@ function AdminProductsPage() {
       fontWeight: 600,
     },
     tableWrap: {
+      width: "100%",
       overflowX: "auto",
+      WebkitOverflowScrolling: "touch",
     },
     table: {
       width: "100%",
       borderCollapse: "collapse",
-      minWidth: "860px",
+      minWidth: "700px",
     },
     th: {
       textAlign: "left",
@@ -455,7 +465,7 @@ function AdminProductsPage() {
         </div>
       </section>
 
-      <section style={styles.contentGrid}>
+      <section className="admin-content-grid">
         <div style={styles.panel}>
           <h2 style={styles.sectionTitle}>
             {editingId ? "Editar produto" : "Cadastrar produto"}
@@ -482,7 +492,7 @@ function AdminProductsPage() {
               type="file"
               accept="image/*"
               onChange={(e) => setSelectedFile(e.target.files[0] || null)}
-              style={styles.input}
+              style={styles.fileInput}
             />
 
             <input
@@ -511,7 +521,7 @@ function AdminProductsPage() {
 
             <input
               type="text"
-              placeholder="Tamanhos separados por vírgula. Ex: P, M, G, GG"
+              placeholder="P, M, G, GG"
               value={sizes}
               onChange={(e) => setSizes(e.target.value)}
               style={styles.input}
@@ -527,12 +537,16 @@ function AdminProductsPage() {
             </label>
 
             <div style={styles.buttonRow}>
-              <button type="submit" disabled={saving} style={styles.primaryButton}>
+              <button
+                type="submit"
+                disabled={saving}
+                style={styles.primaryButton}
+              >
                 {saving
                   ? "Salvando..."
                   : editingId
-                  ? "Atualizar produto"
-                  : "Salvar produto"}
+                    ? "Atualizar produto"
+                    : "Salvar produto"}
               </button>
 
               {editingId && (
@@ -605,12 +619,11 @@ function AdminProductsPage() {
                           R$ {Number(product.price).toFixed(2)}
                         </td>
 
-                        <td style={styles.td}>
-                          {product.category || "-"}
-                        </td>
+                        <td style={styles.td}>{product.category || "-"}</td>
 
                         <td style={styles.td}>
-                          {Array.isArray(product.sizes) && product.sizes.length > 0
+                          {Array.isArray(product.sizes) &&
+                          product.sizes.length > 0
                             ? product.sizes.join(", ")
                             : "-"}
                         </td>

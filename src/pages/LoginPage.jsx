@@ -11,6 +11,7 @@ import { API_URL } from "../config/api";
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,24 +19,34 @@ function LoginPage() {
   async function handleLogin(e) {
     e.preventDefault();
 
+    if (!email || !password) {
+      toast.error("Preencha e-mail e senha.");
+      return;
+    }
+
     try {
-      const response = await axios.post(
-        `${API_URL}/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      setLoading(true);
+
+      const response = await axios.post(`${API_URL}/auth/login`, {
+        email,
+        password,
+      });
 
       login(response.data.user, response.data.token);
 
-      toast.success("Login realizado com sucesso");
+      toast.success("Login realizado com sucesso!");
 
       navigate("/");
     } catch (error) {
       console.log(error);
 
-      toast.error("Erro ao fazer login");
+      if (error.response?.status === 401) {
+        toast.error("E-mail ou senha inválidos.");
+      } else {
+        toast.error("Não foi possível fazer login. Tente novamente.");
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -47,7 +58,7 @@ function LoginPage() {
         <form onSubmit={handleLogin} className="auth-form">
           <input
             type="email"
-            placeholder="Digite seu email"
+            placeholder="Digite seu e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -59,11 +70,32 @@ function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Entrar</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Entrando..." : "Entrar"}
+          </button>
         </form>
 
+        <p
+          style={{
+            marginTop: "1rem",
+            marginBottom: "1rem",
+            textAlign: "center",
+          }}
+        >
+          <Link
+            to="/forgot-password"
+            style={{
+              color: "#111827",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
+            Esqueceu sua senha?
+          </Link>
+        </p>
+
         <p className="auth-text">
-          Não tem conta? <Link to="/register">Criar conta</Link>
+          Não tem uma conta? <Link to="/register">Criar conta</Link>
         </p>
       </div>
     </div>

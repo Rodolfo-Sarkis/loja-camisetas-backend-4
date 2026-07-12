@@ -16,6 +16,7 @@ import AdminPage from "./pages/AdminPage";
 import AdminProductsPage from "./pages/AdminProductsPage";
 import AdminUploadPage from "./pages/AdminUploadPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -68,43 +69,53 @@ function App() {
         style={{
           position: "relative",
           zIndex: 1,
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
         <Header user={normalizedUser} onLogout={handleLogout} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
+        <main style={{ flex: 1 }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
 
-          <Route path="/products" element={<Products />} />
+            <Route path="/products" element={<Products />} />
 
-          <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
 
-          <Route path="/cart" element={<CartPage />} />
+            <Route path="/cart" element={<CartPage />} />
 
-          <Route path="/login" element={<LoginPage />} />
+            <Route path="/login" element={<LoginPage />} />
 
-          <Route path="/register" element={<RegisterPage />} />
-
-          <Route element={<ProtectedRoute />}>
-            <Route path="/checkout" element={<Checkout />} />
-          </Route>
-
-          <Route element={<ProtectedRoute adminOnly />}>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/register" element={<RegisterPage />} />
 
             <Route
-              path="/admin/products"
-              element={<AdminProductsPage />}
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
             />
 
-            <Route
-              path="/admin/upload"
-              element={<AdminUploadPage />}
-            />
-          </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/checkout" element={<Checkout />} />
+            </Route>
 
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+            <Route element={<ProtectedRoute adminOnly />}>
+              <Route path="/admin" element={<AdminPage />} />
+
+              <Route
+                path="/admin/products"
+                element={<AdminProductsPage />}
+              />
+
+              <Route
+                path="/admin/upload"
+                element={<AdminUploadPage />}
+              />
+            </Route>
+
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </main>
 
         <Footer />
 

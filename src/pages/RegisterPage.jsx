@@ -1,31 +1,50 @@
 import "../styles/auth.css";
+
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 import { API_URL } from "../config/api";
 
 function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   async function handleRegister(e) {
     e.preventDefault();
 
+    if (!name || !email || !password) {
+      toast.error("Preencha todos os campos.");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       await axios.post(`${API_URL}/auth/register`, {
         name,
         email,
         password,
       });
 
-      alert("Cadastro realizado com sucesso");
+      toast.success("Conta criada com sucesso!");
+
       navigate("/login");
     } catch (error) {
       console.log(error);
-      alert("Erro no cadastro");
+
+      if (error.response?.status === 409) {
+        toast.error("Este e-mail já está cadastrado.");
+      } else {
+        toast.error("Não foi possível criar a conta. Tente novamente.");
+      }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -44,7 +63,7 @@ function RegisterPage() {
 
           <input
             type="email"
-            placeholder="Digite seu email"
+            placeholder="Digite seu e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -56,11 +75,26 @@ function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit">Criar Conta</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Criando conta..." : "Criar Conta"}
+          </button>
         </form>
 
+        <p
+          style={{
+            marginTop: "1rem",
+            textAlign: "center",
+            color: "#6b7280",
+            fontSize: "0.95rem",
+            lineHeight: 1.5,
+          }}
+        >
+          Após a integração do sistema de e-mails, você receberá uma confirmação
+          de cadastro no seu e-mail.
+        </p>
+
         <p className="auth-text">
-          Já tem conta? <Link to="/login">Fazer login</Link>
+          Já tem uma conta? <Link to="/login">Fazer login</Link>
         </p>
       </div>
     </div>

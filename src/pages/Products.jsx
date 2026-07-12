@@ -48,14 +48,18 @@ function Products() {
   }, [products]);
 
   const filteredProducts = useMemo(() => {
+    const searchTerm = search.toLowerCase().trim();
+
     return products.filter((product) => {
       const productName = product.name?.toLowerCase() || "";
-      const productCategory = product.category || "";
+      const productCategory = product.category?.toLowerCase() || "";
 
-      const matchesSearch = productName.includes(search.toLowerCase());
+      const matchesSearch =
+        productName.includes(searchTerm) ||
+        productCategory.includes(searchTerm);
 
       const matchesCategory =
-        category === "Todos" || productCategory === category;
+        category === "Todos" || product.category === category;
 
       return matchesSearch && matchesCategory;
     });
@@ -160,7 +164,7 @@ function Products() {
       <section style={styles.hero}>
         <h1 style={styles.heroTitle}>Coleção completa</h1>
         <p style={styles.heroText}>
-          Explore todos os produtos da Transcedental Clothing. Aqui você
+          Explore todos os produtos da Transcendental Clothing. Aqui você
           encontra o catálogo completo da loja, com busca e filtro por categoria
           para facilitar a navegação.
         </p>
@@ -206,7 +210,9 @@ function Products() {
               fontWeight: 500,
             }}
           >
-            Produtos encontrados: {filteredProducts.length}
+            {filteredProducts.length === 1
+              ? "1 produto encontrado"
+              : `${filteredProducts.length} produtos encontrados`}
           </p>
         </div>
 
@@ -231,7 +237,22 @@ function Products() {
 
       {!loading && !error && filteredProducts.length === 0 && (
         <div style={styles.emptyBox}>
-          Nenhum produto encontrado com esses filtros.
+          <p
+            style={{
+              marginTop: 0,
+              marginBottom: "1rem",
+            }}
+          >
+            Nenhum produto encontrado com esses filtros.
+          </p>
+
+          <button
+            type="button"
+            onClick={handleClearFilters}
+            style={styles.clearButton}
+          >
+            Limpar filtros
+          </button>
         </div>
       )}
 

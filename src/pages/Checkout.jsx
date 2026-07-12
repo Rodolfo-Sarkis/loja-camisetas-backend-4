@@ -277,9 +277,14 @@ function Checkout() {
             />
 
             <button type="submit" style={styles.button}>
-              Finalizar pedido
+              Continuar para pagamento
             </button>
           </form>
+
+          <p style={styles.smallNote}>
+            🔒 Pagamento seguro. Você será direcionado ao ambiente protegido do
+            Mercado Pago para concluir sua compra.
+          </p>
 
           <p style={styles.smallNote}>
             Seus dados serão utilizados apenas para processar o pedido e
@@ -292,9 +297,7 @@ function Checkout() {
 
           <div style={styles.summaryList}>
             {cartItems.map((item) => {
-              const imageSrc = item.image?.startsWith("http")
-                ? item.image
-                : item.image;
+              const imageSrc = item.image;
 
               return (
                 <div key={`${item.id}-${item.size}`} style={styles.item}>
