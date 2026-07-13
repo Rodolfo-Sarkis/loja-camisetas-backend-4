@@ -8,6 +8,8 @@ const connectDB = require("./config/db");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
 
@@ -46,6 +48,8 @@ app.get("/", (req, res) => {
 app.use("/products", productRoutes);
 app.use("/auth", authRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/orders", orderRoutes);
+app.use("/payments", paymentRoutes);
 
 const PORT = process.env.PORT || 5000;
 

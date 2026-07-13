@@ -146,11 +146,25 @@ function CartPage() {
         </div>
 
         {cartItems.length > 0 && (
-          <Link to="/checkout">
-            <button className="checkout-button">
-              Ir para checkout
-            </button>
-          </Link>
+          <>
+            <Link
+              to="/products"
+              style={{ display: "block", marginBottom: "1rem" }}
+            >
+              <button className="checkout-button">
+                Continuar comprando
+              </button>
+            </Link>
+
+            <Link
+              to="/checkout"
+              style={{ display: "block" }}
+            >
+              <button className="checkout-button">
+                Ir para checkout
+              </button>
+            </Link>
+          </>
         )}
       </div>
     </>
